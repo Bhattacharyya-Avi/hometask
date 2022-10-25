@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\LoginController;
+use App\Http\Controllers\Backend\StripeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,7 +19,15 @@ use Illuminate\Support\Facades\Route;
 Route::controller(LoginController::class)->group(function(){
     Route::get('/','login')->name('login');
     Route::get('/registration','registration')->name('registration');
+    Route::post('/do/registration','doRegistration')->name('do.registration');
 });
+Route::controller(StripeController::class)->group(function(){
+    Route::get('/payment/{user}','payment')->name('payment');
+    Route::post('/stripe/payment/{user}','doPayment')->name('stripe.payment');
+});
+
+
+// dashboard
 Route::prefix('admin')->group(function(){
     Route::controller(DashboardController::class)->group(function(){
         Route::get('/','dashboard')->name('admin.dashboard');

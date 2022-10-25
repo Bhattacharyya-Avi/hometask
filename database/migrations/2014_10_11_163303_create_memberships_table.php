@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug');
+            $table->double('price')->default(0);
             $table->boolean('status')->default(1);
             $table->timestamps();
         });

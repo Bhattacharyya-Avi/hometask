@@ -19,7 +19,8 @@ class MembershipTableSeeder extends Seeder
         $data = [
             [
                 'name' => 'Premium',
-                'slug' => Str::slug('Premium')
+                'slug' => Str::slug('Premium'),
+                'price' => 100,
             ],
             [
                 'name' => 'Free',

@@ -106,19 +106,28 @@
                 </div>
               </div> --}}
               <div class="card-body">
-                <form role="form text-left">
+                <form action="{{route('do.registration')}}" method="POST">
+                  @csrf
                   <div class="mb-3">
-                    <input type="text" class="form-control" placeholder="Name" aria-label="Name" aria-describedby="email-addon">
+                    <input name="name" type="text" class="form-control" placeholder="Name" aria-label="Name" aria-describedby="email-addon">
                   </div>
                   <div class="mb-3">
-                    <input type="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon">
+                    <input name="email" type="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon">
                   </div>
                   <div class="mb-3">
-                    <input type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon">
+                    <input name="password" type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon">
+                  </div>
+                  <div class="mb-3">
+                    <label for="">Select membership</label>
+                    <select class="form-control" name="membership" >
+                      @foreach ($memberships as $membership)
+                          <option value="{{$membership->id}}">{{$membership->name}}</option>
+                      @endforeach
+                    </select>
                   </div>
                   
                   <div class="text-center">
-                    <button type="button" class="btn bg-gradient-dark w-100 my-4 mb-2">Sign up</button>
+                    <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Sign up</button>
                   </div>
                   <p class="text-sm mt-3 mb-0">Already have an account? <a href="{{route('login')}}" class="text-dark font-weight-bolder">Sign in</a></p>
                 </form>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\LoginController;
 use App\Http\Controllers\Backend\StripeController;
+use App\Http\Controllers\Frontend\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,9 +22,18 @@ Route::controller(LoginController::class)->group(function(){
     Route::get('/registration','registration')->name('registration');
     Route::post('/do/registration','doRegistration')->name('do.registration');
 });
+// Stripe
 Route::controller(StripeController::class)->group(function(){
     Route::get('/payment/{user}','payment')->name('payment');
     Route::post('/stripe/payment/{user}','doPayment')->name('stripe.payment');
+});
+
+// frontend
+Route::prefix('user')->group(function(){
+    Route::controller(HomeController::class)->group(function(){
+        Route::get('/','home')->name('home');
+    });
+    
 });
 
 

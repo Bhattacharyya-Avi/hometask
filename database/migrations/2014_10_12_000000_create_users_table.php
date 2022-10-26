@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('password');
             $table->foreignId('role_id')->constrained('roles')->restrictOnDelete();
             $table->foreignId('membership_id')->constrained('memberships')->restrictOnDelete();
+            $table->boolean('payment_status')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

@@ -1,18 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Laravel 7 - Integrate Stripe Payment Gateway Example</title>
+	<title>Laravel 5 - Stripe Payment Gateway Integration Example - ItSolutionStuff.com</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <style type="text/css">
-        .container {
-            margin-top: 40px;
-        }
-        .panel-heading {
+        .panel-title {
         display: inline;
         font-weight: bold;
         }
-        .flex-table {
+        .display-table {
             display: table;
         }
         .display-tr {
@@ -21,19 +18,25 @@
         .display-td {
             display: table-cell;
             vertical-align: middle;
-            width: 55%;
+            width: 61%;
         }
     </style>
 </head>
 <body>
   
-<div class="container">  
+<div class="container">
+  
+    <h1>Laravel 5 - Stripe Payment Gateway Integration Example <br/> ItSolutionStuff.com</h1>
+  
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="row text-center">
-                        <h3 class="panel-heading">Payment Details</h3>
+            <div class="panel panel-default credit-card-box">
+                <div class="panel-heading display-table" >
+                    <div class="row display-tr" >
+                        <h3 class="panel-title display-td" >Payment Details</h3>
+                        <div class="display-td" >                            
+                            <img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png">
+                        </div>
                     </div>                    
                 </div>
                 <div class="panel-body">
@@ -45,7 +48,7 @@
                         </div>
                     @endif
   
-                    <form role="form" action="{{ route('stripe.payment',$user_id) }}" method="post" class="validation"
+                    <form role="form" action="{{ route('stripe.payment',$user_id) }}" method="post" class="require-validation"
                                                      data-cc-on-file="false"
                                                     data-stripe-publishable-key="{{ env('STRIPE_KEY') }}"
                                                     id="payment-form">
@@ -61,15 +64,15 @@
                         <div class='form-row row'>
                             <div class='col-xs-12 form-group card required'>
                                 <label class='control-label'>Card Number</label> <input
-                                    autocomplete='off' class='form-control card-num' size='20'
+                                    autocomplete='off' class='form-control card-number' size='20'
                                     type='text'>
                             </div>
                         </div>
   
                         <div class='form-row row'>
                             <div class='col-xs-12 col-md-4 form-group cvc required'>
-                                <label class='control-label'>CVC</label> 
-                                <input autocomplete='off' class='form-control card-cvc' placeholder='e.g 415' size='4'
+                                <label class='control-label'>CVC</label> <input autocomplete='off'
+                                    class='form-control card-cvc' placeholder='ex. 311' size='4'
                                     type='text'>
                             </div>
                             <div class='col-xs-12 col-md-4 form-group expiration required'>
@@ -84,9 +87,16 @@
                             </div>
                         </div>
   
+                        <div class='form-row row'>
+                            <div class='col-md-12 error form-group hide'>
+                                <div class='alert-danger alert'>Please correct the errors and try
+                                    again.</div>
+                            </div>
+                        </div>
+  
                         <div class="row">
                             <div class="col-xs-12">
-                                <button class="btn btn-info btn-lg btn-block" type="submit">Pay Now (100)</button>
+                                <button class="btn btn-primary btn-lg btn-block" type="submit">Pay Now ($100)</button>
                             </div>
                         </div>
                           
@@ -95,6 +105,7 @@
             </div>        
         </div>
     </div>
+      
 </div>
   
 </body>
@@ -103,23 +114,23 @@
   
 <script type="text/javascript">
 $(function() {
-    var $form         = $(".validation");
-  $('form.validation').bind('submit', function(e) {
-    var $form         = $(".validation"),
-        inputVal = ['input[type=email]', 'input[type=password]',
+    var $form         = $(".require-validation");
+  $('form.require-validation').bind('submit', function(e) {
+    var $form         = $(".require-validation"),
+        inputSelector = ['input[type=email]', 'input[type=password]',
                          'input[type=text]', 'input[type=file]',
                          'textarea'].join(', '),
-        $inputs       = $form.find('.required').find(inputVal),
-        $errorStatus = $form.find('div.error'),
+        $inputs       = $form.find('.required').find(inputSelector),
+        $errorMessage = $form.find('div.error'),
         valid         = true;
-        $errorStatus.addClass('hide');
+        $errorMessage.addClass('hide');
  
         $('.has-error').removeClass('has-error');
     $inputs.each(function(i, el) {
       var $input = $(el);
       if ($input.val() === '') {
         $input.parent().addClass('has-error');
-        $errorStatus.removeClass('hide');
+        $errorMessage.removeClass('hide');
         e.preventDefault();
       }
     });
@@ -128,23 +139,25 @@ $(function() {
       e.preventDefault();
       Stripe.setPublishableKey($form.data('stripe-publishable-key'));
       Stripe.createToken({
-        number: $('.card-num').val(),
+        number: $('.card-number').val(),
         cvc: $('.card-cvc').val(),
         exp_month: $('.card-expiry-month').val(),
         exp_year: $('.card-expiry-year').val()
-      }, stripeHandleResponse);
+      }, stripeResponseHandler);
     }
   
   });
   
-  function stripeHandleResponse(status, response) {
+  function stripeResponseHandler(status, response) {
         if (response.error) {
             $('.error')
                 .removeClass('hide')
                 .find('.alert')
                 .text(response.error.message);
         } else {
+            // token contains id, last4, and card type
             var token = response['id'];
+            // insert the token into the form so it gets submitted to the server
             $form.find('input[type=text]').empty();
             $form.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
             $form.get(0).submit();

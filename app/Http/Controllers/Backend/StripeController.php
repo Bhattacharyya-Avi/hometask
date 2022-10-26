@@ -20,7 +20,6 @@ class StripeController extends Controller
     {
         // dd($request->all(),$user);
         $user_info = User::with('membership')->find($user);
-        // dd($user_info);
         Stripe::setApiKey(env('STRIPE_SECRET'));
         Charge::create ([
                 "amount" => $user_info->membership->price * 150,
@@ -33,6 +32,9 @@ class StripeController extends Controller
             'user_id' => $user_info->id,
             'amount' => $user_info->membership->price,
             'stripe_token' => $request->stripeToken
+        ]);
+        $user_info -> update([
+            'payment_status' => 1
         ]);
         // Session::flash('success', 'Payment has been successfully processed.');
           

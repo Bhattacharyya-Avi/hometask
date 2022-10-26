@@ -95,7 +95,7 @@
                                     <p class="mb-0">Enter email and password to sign in</p>
                                 </div>
                                 <div class="card-body">
-                                    <form action="" method="POST">
+                                    <form action="{{route('do.login')}}" method="POST">
                                         @csrf
                                         <label>Email</label>
                                         <div class="mb-3">
@@ -108,10 +108,7 @@
                                                 placeholder="Password" aria-label="Password"
                                                 aria-describedby="password-addon">
                                         </div>
-                                        {{-- <div class="form-check form-switch">
-                      <input class="form-check-input" type="checkbox" id="rememberMe" checked="">
-                      <label class="form-check-label" for="rememberMe">Remember me</label>
-                    </div> --}}
+                                        
                                         <div class="text-center">
                                             <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">Sign
                                                 in</button>

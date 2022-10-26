@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(LoginController::class)->group(function(){
     Route::get('/','login')->name('login');
+    Route::post('/do/login','loginPost')->name('do.login');
     Route::get('/registration','registration')->name('registration');
     Route::post('/do/registration','doRegistration')->name('do.registration');
 });
@@ -29,18 +30,24 @@ Route::controller(StripeController::class)->group(function(){
 });
 
 // frontend
-Route::prefix('user')->group(function(){
-    Route::controller(HomeController::class)->group(function(){
-        Route::get('/','home')->name('home');
-    });
-    
+Route::middleware('auth')->group(function(){
+    Route::get('/logout',[LoginController::class,'logout'])->name('user.logout');
+    Route::prefix('user')->group(function(){
+        Route::controller(HomeController::class)->group(function(){
+            Route::get('/','home')->name('home');
+        });
+        
+    }); // end user group
+
+    // backend
+    Route::prefix('admin')->group(function(){
+        Route::controller(DashboardController::class)->group(function(){
+            Route::get('/','dashboard')->name('admin.dashboard');
+        });
+    }); // end admin group
 });
 
 
-// dashboard
-Route::prefix('admin')->group(function(){
-    Route::controller(DashboardController::class)->group(function(){
-        Route::get('/','dashboard')->name('admin.dashboard');
-    });
-});
+
+
 

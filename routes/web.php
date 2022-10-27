@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function(){
         // post
         Route::controller(PostController::class)->group(function(){
            Route::get('/post/create','create')->name('post.create'); 
+           Route::post('/post/store','store')->name('post.store'); 
         });
     }); // end user group
 

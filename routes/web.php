@@ -4,6 +4,7 @@ use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\LoginController;
 use App\Http\Controllers\Backend\StripeController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\PostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,7 +37,11 @@ Route::middleware('auth')->group(function(){
         Route::controller(HomeController::class)->group(function(){
             Route::get('/','home')->name('home');
         });
-        
+
+        // post
+        Route::controller(PostController::class)->group(function(){
+           Route::get('/post/create','create')->name('post.create'); 
+        });
     }); // end user group
 
     // backend

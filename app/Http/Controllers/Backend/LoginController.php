@@ -18,7 +18,6 @@ class LoginController extends Controller
 
     public function loginPost(Request $request)
     {
-        // dd($request->all());
         $request->validate([
             'email'=> 'required|email'
         ]);
@@ -28,6 +27,7 @@ class LoginController extends Controller
             if (auth()->user()->payment_status == 1) {
                 return redirect()->route('home');
             }
+            //payment was failed
             return redirect()->route('payment',auth()->user()->id);
         }
     }
@@ -44,7 +44,7 @@ class LoginController extends Controller
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required',
-            'memnership' => 'required',
+            'membership' => 'required',
         ]);
         try {
             if ($request->membership == 2) {

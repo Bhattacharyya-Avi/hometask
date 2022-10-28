@@ -19,6 +19,9 @@ class LoginController extends Controller
     public function loginPost(Request $request)
     {
         // dd($request->all());
+        $request->validate([
+            'email'=> 'required|email'
+        ]);
         $user_input = $request->except('_token');
         if (Auth::attempt($user_input)) {
             // no error occer during premium registration process 
@@ -37,26 +40,39 @@ class LoginController extends Controller
 
     public function doRegistration(Request $request)
     {
-        if ($request->membership == 2) {
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => bcrypt($request->password),
-                'membership_id' => $request->membership,
-                'role_id' => 1,
-                'payment_status' => 1
-            ]);
-            return redirect()->route('home');
-        }else {
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => bcrypt($request->password),
-                'membership_id' => $request->membership,
-                'role_id' => 1,
-            ]);
-            return redirect()->route('payment',['user'=>$user]);
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'password' => 'required',
+            'memnership' => 'required',
+        ]);
+        try {
+            if ($request->membership == 2) {
+                $user = User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => bcrypt($request->password),
+                    'membership_id' => $request->membership,
+                    'role_id' => 1,
+                    'payment_status' => 1
+                ]);
+                notify()->success('Registration successfull.');
+                return redirect()->route('home');
+            }else {
+                $user = User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => bcrypt($request->password),
+                    'membership_id' => $request->membership,
+                    'role_id' => 1,
+                ]);
+                notify()->success('Pay amount to active your account');
+                return redirect()->route('payment',['user'=>$user]);
+            }
+        } catch (\Throwable $th) {
+            notify()->error($th->getMessage());
         }
+        
     }
 
     public function logout()

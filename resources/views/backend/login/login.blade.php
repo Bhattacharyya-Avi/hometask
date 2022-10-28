@@ -101,6 +101,9 @@
                                         <div class="mb-3">
                                             <input name="email" type="email" class="form-control" placeholder="Email"
                                                 aria-label="Email" aria-describedby="email-addon">
+                                                @error('record')
+                                                    <span style="color: red">{{$message}}</span>
+                                                @enderror
                                         </div>
                                         <label>Password</label>
                                         <div class="mb-3">
@@ -115,12 +118,6 @@
                                         </div>
                                     </form>
                                 </div>
-                                {{-- <div class="card-footer text-center pt-0 px-lg-2 px-1">
-                  <p class="mb-4 text-sm mx-auto">
-                    Don't have an account?
-                    <a href="" class="text-info text-gradient font-weight-bold">Sign up</a>
-                  </p>
-                </div> --}}
                             </div>
                         </div>
                         <div class="col-md-6">

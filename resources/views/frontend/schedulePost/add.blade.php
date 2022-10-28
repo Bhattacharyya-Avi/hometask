@@ -1,0 +1,34 @@
+@extends('frontend.master')
+@section('contents')
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <form action="{{route('schedule.post.store')}}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                      <label>Title</label>
+                      <input required name="title" type="text" class="form-control" id="exampleInputEmail1"  placeholder="Enter post title">
+                      @error('title')
+                        <span style="color: red">{{$message}}</span>
+                      @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Post Details</label>
+                        <textarea name="details" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <div class='input-group date' id='datetimepicker'>
+                        <input name="schedule_time" type='text' class="form-control" />
+                        <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="
+                    margin-top: 10px;">Add</button>
+                </form>
+            </div>
+        </div>
+    </div>
+@endsection
+        

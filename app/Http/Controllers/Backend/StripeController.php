@@ -17,8 +17,7 @@ class StripeController extends Controller
     }
 
     public function doPayment(Request $request, $user)
-    {
-        // dd($request->all(),$user);
+    {        
         $user_info = User::with('membership')->find($user);
         Stripe::setApiKey(env('STRIPE_SECRET'));
         Charge::create ([
@@ -36,7 +35,7 @@ class StripeController extends Controller
         $user_info -> update([
             'payment_status' => 1
         ]);
-        // Session::flash('success', 'Payment has been successfully processed.');
+        notify()->success('Payment success. Login to your account');
           
         return redirect()->route('login');
     }

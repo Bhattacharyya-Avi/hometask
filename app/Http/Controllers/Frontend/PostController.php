@@ -17,6 +17,11 @@ class PostController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
+        $request->validate([
+            'title' => 'required',
+            'details' => 'required',
+        ]);
+
         Post::create([
             'user_id' => auth()->user()->id,
             'title' => $request->title,
@@ -25,7 +30,7 @@ class PostController extends Controller
 
         $user = auth()->user();
         dispatch(new PostCreateJob($user));
-        
-        return redirect()->back();
+        notify()->success('Post created');
+        return redirect()->route('home');
     }
 }

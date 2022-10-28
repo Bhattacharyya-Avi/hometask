@@ -10,6 +10,9 @@
             <ul class="navbar-nav ms-auto py-4 py-lg-0">
                 <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{route('user.logout')}}">logout</a></li>
                 <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{route('post.create')}}">Create a post</a></li>
+                @if (auth()->user()->membership->id == 1)
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{route('schedule.post.add')}}">Create Schedule post</a></li>
+                @endif
             </ul>
         </div>
     </div>

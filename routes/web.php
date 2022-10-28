@@ -5,6 +5,7 @@ use App\Http\Controllers\Backend\LoginController;
 use App\Http\Controllers\Backend\StripeController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\PostController;
+use App\Http\Controllers\Frontend\SchedulePostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,6 +43,12 @@ Route::middleware('auth')->group(function(){
         Route::controller(PostController::class)->group(function(){
            Route::get('/post/create','create')->name('post.create'); 
            Route::post('/post/store','store')->name('post.store'); 
+        });
+
+        // schedule post
+        Route::controller(SchedulePostController::class)->group(function(){
+            Route::get('/schedule/post/add','schedulePostAdd')->name('schedule.post.add');
+            Route::post('/schedule/post/store','schedulePostStore')->name('schedule.post.store');
         });
     }); // end user group
 

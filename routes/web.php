@@ -3,6 +3,7 @@
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\LoginController;
 use App\Http\Controllers\Backend\StripeController;
+use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\PostController;
 use App\Http\Controllers\Frontend\SchedulePostController;
@@ -56,6 +57,9 @@ Route::middleware('auth')->group(function(){
     Route::prefix('admin')->group(function(){
         Route::controller(DashboardController::class)->group(function(){
             Route::get('/','dashboard')->name('admin.dashboard');
+        });
+        Route::controller(UserController::class)->group(function(){
+            Route::get('/user','userlist')->name('user.list');
         });
     }); // end admin group
 });

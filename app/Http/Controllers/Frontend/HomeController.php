@@ -10,12 +10,13 @@ class HomeController extends Controller
 {
     public function home()
     {
+        $posts = Post::with('user')->orderBy('id','desc')->get();
         $postcount = 0;
         if (auth()->user()->membership_id == 2) {
             $postcount = Post::where('user_id',auth()->user()->id)->count();
-            return view('frontend.home.index',compact('postcount'));
+            return view('frontend.home.index',compact('postcount','posts'));
         }
-        return view('frontend.home.index');
+        return view('frontend.home.index',compact('posts'));
 
     }
 }

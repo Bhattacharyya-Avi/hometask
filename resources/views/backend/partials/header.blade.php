@@ -27,7 +27,7 @@
               <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
                 <i class="fa fa-user me-sm-1"></i>
                 @if (auth()->user())
-                  <span class="d-sm-inline d-none"><a href="">Sign out</a> </span>
+                  <span class="d-sm-inline d-none"><a href="{{route('user.logout')}}">Sign out</a> </span>
                 @endif
               </a>
             </li>

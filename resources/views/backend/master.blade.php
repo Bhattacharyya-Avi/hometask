@@ -61,7 +61,6 @@
     <!-- End Navbar -->
     <div class="container-fluid py-4">
       {{-- main start --}}
-      @include('flash-message')
       @yield('contants')
       {{-- main end --}}
       {{-- footer start --}}

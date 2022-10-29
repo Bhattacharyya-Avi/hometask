@@ -21,14 +21,20 @@ class LoginController extends Controller
         $request->validate([
             'email'=> 'required|email'
         ]);
+        
         $user_input = $request->except('_token');
         if (Auth::attempt($user_input)) {
-            // no error occer during premium registration process 
-            if (auth()->user()->payment_status == 1) {
-                return redirect()->route('home');
+            if (auth()->user()->role_id == 1) {
+                // no error occer during premium registration process 
+                if (auth()->user()->payment_status == 1) {
+                    return redirect()->route('home');
+                }
+                //payment was failed
+                return redirect()->route('payment',auth()->user()->id);
+            }else {
+                // no error occer during premium registration process 
+                return redirect()->route('admin.dashboard');
             }
-            //payment was failed
-            return redirect()->route('payment',auth()->user()->id);
         }
     }
 

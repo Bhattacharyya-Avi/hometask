@@ -2,10 +2,12 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Post;
-use App\Models\SchedulePost as ModelsSchedulePost;
 use Carbon\Carbon;
+use App\Models\Post;
+use App\Models\User;
+use App\Jobs\PostCreateJob;
 use Illuminate\Console\Command;
+use App\Models\SchedulePost as ModelsSchedulePost;
 
 class SchedulePost extends Command
 {
@@ -40,6 +42,9 @@ class SchedulePost extends Command
                     'title' => $post->title,
                     'details' => $post->details,
                 ]);
+
+                $user = User::where('id',$post->user_id)->first();
+                dispatch(new PostCreateJob($user));
 
                 $post->delete();
             }
